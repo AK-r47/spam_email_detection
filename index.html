@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phishing Detection</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 600px; margin: auto; }
+        h1 { text-align: center; }
+        textarea { width: 100%; height: 100px; margin-top: 10px; }
+        button { margin-top: 20px; padding: 10px; width: 100%; }
+        .result { margin-top: 20px; text-align: center; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Phishing Detection</h1>
+        <textarea id="inputText" placeholder="Paste email content here..."></textarea>
+        <button onclick="makePrediction()">Check if Phishing</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        async function makePrediction() {
+            const text = document.getElementById('inputText').value;
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            const data = await response.json();
+            console.log(data);
+            document.getElementById('result').innerText = 
+                data.prediction ? "This is likely a phishing email." : "This email seems safe.";
+        }
+    </script>
+</body>
+</html>
